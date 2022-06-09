@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+    
+    {% block content %}
+    <div>
+        <h2>You can smile</h2>
+    </div>
+    <div class="card-group" style="width:80rem;margin:1rem;padding:10px;">
+        <div class="card">
+            <img class="card-img" src="{{ url_for('video') }}">
+          <div class="card-body">
+            <h5 class="card-title">Original</h5>
+            <p class="card-text"></p>
+          </div>
+        </div>
+    </div>
+    {% endblock %}

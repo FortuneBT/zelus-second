@@ -93,10 +93,10 @@ class Routes:
 
         @app.post("/submitform",response_class=HTMLResponse)
         async def handle_form(request:Request):
-            print("form submitted!!!!!!!!!!")
             file_name = "new-Picture.jpg"
             print("writing image")
             cv2.imwrite("./static/Images/" + file_name,self.stream.get_image())
+            print("image written")
             context = {"request":request}
             context["filename"] = file_name
             return templates.TemplateResponse("prediction.html",context)

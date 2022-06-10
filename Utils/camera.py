@@ -18,6 +18,14 @@ class Stream():
             #print("failed to read get_frame")
             pass
 
+    def get_image(self):
+        ret,image = self.stream.read()
+        if ret == True:
+            return image
+        else:
+            #print("failed to read get_image")
+            pass
+
     def start(self):
         print("start streaming of camera")
         self.stream = cv2.VideoCapture(-1)
@@ -27,14 +35,18 @@ class Stream():
         cv2.destroyAllWindows()
 
     def save_picture(self):
+        print("ENTER SAVE PICTURE")
         ret,image = self.stream.read()
         print(ret)
         if ret == True:
-            cv2.imwrite("../static/Images/new-Picture.jpg",image)
+            filename = "new-Picture.jpg"
+            print("Type of image : ",type(image))
+            cv2.imwrite("/static/Images" + filename ,image)
             print("Picture saved!")
-            self.stop()
+            return filename
         else:
             print("failed to save picture. Could not read image (self.stream.read())")
+            return False
 
 
 class Webcam():

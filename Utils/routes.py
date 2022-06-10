@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI,File,UploadFile,Form
 from fastapi.responses import HTMLResponse,StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +8,8 @@ from typing import List,Dict
 from Utils.camera import Stream
 from Utils.camera import Webcam
 import os
+import cv2
+import numpy as np
 
 
 
@@ -44,6 +46,7 @@ class Routes:
         print("Start Routes")
         app = self.app
         templates = self.templates
+        print("WEBCAM SWITCH = ",self.webcam.get_switch_webcam())
 
         @app.get("/", response_class=HTMLResponse)
         async def index(request: Request):
@@ -87,3 +90,13 @@ class Routes:
             return StreamingResponse(self.webcam.generate(self.stream),
             media_type="multipart/x-mixed-replace;boundary=frame"
             )
+
+        @app.post("/submitform",response_class=HTMLResponse)
+        async def handle_form(request:Request):
+            print("form submitted!!!!!!!!!!")
+            file_name = "new-Picture.jpg"
+            print("writing image")
+            cv2.imwrite("./static/Images/" + file_name,self.stream.get_image())
+            context = {"request":request}
+            context["filename"] = file_name
+            return templates.TemplateResponse("prediction.html",context)
